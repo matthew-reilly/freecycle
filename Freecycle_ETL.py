@@ -60,6 +60,11 @@ def Check_Column(col, value):
     except:
         print "result: Scrape fail on column,", col
 
+def Message_Data_to_Table(msg_id, title, body):
+    Message_Data.append(msg_id) #Message ID
+    Message_Data.append(str(title)) #Message Title
+    Message_Data.append(str(body)) #Message Body
+
 def Loop_Through_Messages(i): #i = start ID - 1
     
     while i < MaxMSG:
@@ -72,10 +77,9 @@ def Loop_Through_Messages(i): #i = start ID - 1
             msgbodyhtml = select(soup, '.msgarea')[0]
             MSG_Body = unicode.join(u' ',map(unicode,msgbodyhtml)).replace('<br />', '~break~').replace('\n', '~n-break~')
             
-            Message_Data.append(i) #Message ID
-            Message_Data.append(MSG_Title) #Message Title
-            Message_Data.append(MSG_Body) #Message Body
-            print "Post Data:", i, MSG_Title, MSG_Body
+            Message_Data_to_Table(i, MSG_Title, MSG_Body)
+            
+            #print "Post Data:", i, MSG_Title, MSG_Body
             print i, "of", MaxMSG
         except:
             print "ERROR: SCRAPE FAIL ON POSTING ID", i
