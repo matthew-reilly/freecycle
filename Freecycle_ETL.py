@@ -100,8 +100,3 @@ Loop_Through_Messages(StartMessage - 1)
 table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_count by i table
 
 #INSERT DATA IN TO DATABASE
-
-
-#OLD CODE#    
-#Convert BS object to unicode string and replace all HTML breaks with ~break~
-#msgbody = unicode.join(u' ',map(unicode,select(msgbodyhtml, 'div')[0])).replace('<br />', '~break~')
