@@ -83,10 +83,15 @@ def Loop_Through_Messages(i): #i = start ID - 1
             print i, "of", MaxMSG
         except:
             print "ERROR: SCRAPE FAIL ON POSTING ID", i
+            
             Check_Column("Title", MSG_Title)
             Check_Column("Body HTML", msgbodyhtml)
             Check_Column("Body Text", MSG_Body)
-            break
+            
+            if MSG_Title == 'freecycledc':
+                Message_Data_to_Table(i, 'Message does not exist', 'NOTHING TO SEE HERE, FOLKS')
+            else:
+                Message_Data_to_Table(i, 'FAIL', 'FAIL')
 
 #Start ETL
 
