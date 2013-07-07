@@ -103,6 +103,7 @@ MaxMSG = Find_Max_Post_ID()
 
 #TEST VARIABLES#
 if test_bool == 'Y':
+    MaxMSG = 198020
     StartMessage = MaxMSG - 10 #pull in 10 postings for testing
 
 Loop_Through_Messages(StartMessage - 1)
