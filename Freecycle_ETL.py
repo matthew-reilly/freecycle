@@ -61,7 +61,6 @@ def Check_Column(col, value):
         print "result: Scrape fail on column,", col
 
 def Loop_Through_Messages(i): #i = start ID - 1
-    MaxMSG = Find_Max_Post_ID()
     
     while i < MaxMSG:
         i += 1
@@ -90,6 +89,8 @@ def Loop_Through_Messages(i): #i = start ID - 1
 opener = Init_Opener()
 
 Login_To_Yahoo()
+
+MaxMSG = Find_Max_Post_ID()
 
 #TEST VARIABLES#
 if test_bool == 'Y':
