@@ -71,7 +71,7 @@ def Loop_Through_Messages(i): #i = start ID - 1
             MSG_Title = select(soup, 'title')[0].text
 
             msgbodyhtml = select(soup, '.msgarea')[0]
-            MSG_Body = unicode.join(u' ',map(unicode,msgbodyhtml)).replace('<br />', '~break~')
+            MSG_Body = unicode.join(u' ',map(unicode,msgbodyhtml)).replace('<br />', '~break~').replace('\n', '~n-break~')
             
             Message_Data.append(i) #Message ID
             Message_Data.append(MSG_Title) #Message Title
