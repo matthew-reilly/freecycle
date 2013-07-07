@@ -27,7 +27,7 @@ column_count = len(Message_Data) #Number of columns in table
 
 StartMessage = 198000 #Message ID from June 9th, 2013
 
-test_bool = 'Y' #Use test variables
+test_bool = 'N' #Use test variables
 
 #DEFINE FUNCTIONS
 def Init_Opener():
@@ -92,7 +92,7 @@ def Loop_Through_Messages(i): #i = start ID - 1
                 Message_Data_to_Table(i, 'Message does not exist', 'NOTHING TO SEE HERE, FOLKS')
             else:
                 Message_Data_to_Table(i, 'FAIL', 'FAIL')
-
+                
 #Start ETL
 
 opener = Init_Opener()
@@ -111,3 +111,11 @@ Loop_Through_Messages(StartMessage - 1)
 table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_count by i table
 
 #INSERT DATA IN TO DATABASE
+
+#Temp data grab, export data to text file
+Export_File = 'C:\Users\jpavan\Dropbox\Deloitte Stuff\Project_Scripts\Message_Data\Export_TEST.txt'
+
+with open(Export_File,'w') as file:
+    for msg in table_format:
+        print>>file, msg
+          
