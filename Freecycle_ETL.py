@@ -22,7 +22,7 @@ LoginUrl = "https://login.yahoo.com/config/login?"
 
 MessagesURL = "http://groups.yahoo.com/group/freecycledc/messages"
 
-Message_Data = ['Message ID','Title','Message Body']
+Message_Data = []
 column_count = len(Message_Data) #Number of columns in table
 
 StartMessage = 198000 #Message ID from June 9th, 2013
@@ -61,9 +61,7 @@ def Check_Column(col, value):
         print "result: Scrape fail on column,", col
 
 def Message_Data_to_Table(msg_id, title, body):
-    Message_Data.append(msg_id) #Message ID
-    Message_Data.append(str(title)) #Message Title
-    Message_Data.append(str(body)) #Message Body
+    Message_Data.insert(0, (msg_id,title.encode('utf-8'),body.encode('utf-8')))
 
 def Loop_Through_Messages(i): #i = start ID - 1
     
@@ -72,10 +70,13 @@ def Loop_Through_Messages(i): #i = start ID - 1
         try:
             soup = Make_Soup("http://groups.yahoo.com/group/freecycledc/message/" + str(i))
 
-            MSG_Title = select(soup, 'title')[0].text
+            MSG_Title = select(soup, 'title')[0].text.replace('\n', '~n-break~')
 
             msgbodyhtml = select(soup, '.msgarea')[0]
             MSG_Body = unicode.join(u' ',map(unicode,msgbodyhtml)).replace('<br />', '~break~').replace('\n', '~n-break~')
+            
+            if MSG_Title == '': MSG_Title = '(none)'
+            if MSG_Body == '': MSG_Body = '(none)'
             
             Message_Data_to_Table(i, MSG_Title, MSG_Body)
             
@@ -108,7 +109,7 @@ if test_bool == 'Y':
 
 Loop_Through_Messages(StartMessage - 1)
 
-table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_count by i table
+#table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_count by i table
 
 #INSERT DATA IN TO DATABASE
 
@@ -116,6 +117,6 @@ table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_c
 Export_File = 'C:\Users\jpavan\Dropbox\Deloitte Stuff\Project_Scripts\Message_Data\Export_TEST.txt'
 
 with open(Export_File,'w') as file:
-    for msg in table_format:
+    for msg in Message_Data:
         print>>file, msg
           
