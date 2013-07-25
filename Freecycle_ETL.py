@@ -98,7 +98,7 @@ def Loop_Through_Messages(i): #i = start ID - 1
             Check_Column("Body HTML", msgbodyhtml)
             Check_Column("Body Text", MSG_Body)
             
-            if MSG_Title == 'freecycledc':
+            if MSG_Title == 'freecycledc' or 'message' not in MSG_Title.lower():
                 Message_Data_to_Table(i, 'Message does not exist', 'NOTHING TO SEE HERE, FOLKS')
             else:
                 Message_Data_to_Table(i, 'FAIL', 'FAIL')
