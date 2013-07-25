@@ -10,6 +10,8 @@
 
 ##START SCRIPT##
 
+import time
+import random
 import urllib2
 import urllib
 import cookielib
@@ -18,16 +20,16 @@ import pprint
 from BeautifulSoup import BeautifulSoup as Soup
 from soupselect import select
 
+#INITIALIZE VARIABLES AND RANDOM NUMBER GENERATOR
 LoginUrl = "https://login.yahoo.com/config/login?"
-
 MessagesURL = "http://groups.yahoo.com/group/freecycledc/messages"
-
 Message_Data = []
-column_count = len(Message_Data) #Number of columns in table
+StartMessage = 200542 #Message ID from July 18th, 2013
 
-StartMessage = 198000 #Message ID from June 9th, 2013
+random.seed() #Initialize rnd num generator
 
 test_bool = 'N' #Use test variables
+#END INITIALIZATION
 
 #DEFINE FUNCTIONS
 def Init_Opener():
@@ -63,10 +65,18 @@ def Check_Column(col, value):
 def Message_Data_to_Table(msg_id, title, body):
     Message_Data.insert(0, (msg_id,title.encode('utf-8'),body.encode('utf-8')))
 
+def Humanize(s):
+    sleepTime = random.random() * s
+    print "sleep for duration: " + str(sleepTime)
+    time.sleep(sleepTime)
+
 def Loop_Through_Messages(i): #i = start ID - 1
     
     while i < MaxMSG:
         i += 1
+        
+        Humanize(2) #Humanize the program by sleeping 0-2 seconds
+        
         try:
             soup = Make_Soup("http://groups.yahoo.com/group/freecycledc/message/" + str(i))
 
@@ -80,7 +90,6 @@ def Loop_Through_Messages(i): #i = start ID - 1
             
             Message_Data_to_Table(i, MSG_Title, MSG_Body)
             
-            #print "Post Data:", i, MSG_Title, MSG_Body
             print i, "of", MaxMSG
         except:
             print "ERROR: SCRAPE FAIL ON POSTING ID", i
@@ -108,8 +117,6 @@ if test_bool == 'Y':
     StartMessage = MaxMSG - 10 #pull in 10 postings for testing
 
 Loop_Through_Messages(StartMessage - 1)
-
-#table_format = zip(*[iter(Message_Data)]*column_count) #Turn list in to column_count by i table
 
 #INSERT DATA IN TO DATABASE
 
