@@ -193,21 +193,51 @@ $app->post('/removeCupboardList', 'removeCupboardList');
 
 function getList() {
 	$request = Slim::getInstance()->request();
-  
-    $sql = "select * FROM cards ";
+   
+    
+	
+	
+	$sql = "select * FROM cards ";
     try {
             $db = getConnection();
             $stmt = $db->prepare($sql);
     
             $stmt->execute();
-            $wines = $stmt->fetchAll(PDO::FETCH_OBJ);
             $db = null;
-             echo '{"list": ' . json_encode($wines) . '}';
         } catch(PDOException $e) {
             echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 }
 
+
+function newGame($userid, $roomname, $roompass) {
+	$sql = "";
+	$sql = $sql."";
+	
+	$sql = $sql."INSERT INTO `rooms` (`id`, `room_name`, `room_password`, `user_id`, `room_status`,`create_time`)";
+	$sql = $sql."VALUES (NULL, ?, ?, ?, 'init', NOW());";
+
+	$sql = $sql."UPDATE `rooms`  SET `room_name` = concat('room',id) ";
+	$sql = $sql."WHERE id = last_insert_id() AND `room_name` = '';";
+
+	$sql = $sql."INSERT INTO `players` (`user_id`, `room_id`, `previous_player_id`, `status`, `joined`) ";
+	$sql = $sql."VALUES (?, last_insert_id(), -1, 'active', NOW());";
+	
+	try
+	{
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->execute(array($roomname,$roompass,$userid,$userid));
+		
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+//NEW GAME TEST CASE
+//newGame($userid,$roomname,$roompass);
+//END TEST CASE
 
 // Pretty print some JSON
 function json_format($json)
