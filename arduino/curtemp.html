@@ -1,0 +1,26 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+	function readTextFile(file)
+	{
+		var rawFile = new XMLHttpRequest();
+		rawFile.open("GET", file, false);
+		rawFile.onreadystatechange = function ()
+		{
+			if(rawFile.readyState === 4)
+			{
+				if(rawFile.status === 200 || rawFile.status == 0)
+				{
+					var tempValue = rawFile.responseText;
+					document.getElementById('divcurtemp').innerHTML = 'Temperature: <b>' + tempValue + ' °F</b>';
+				}
+			}
+		}
+		rawFile.send(null);
+	}
+	setInterval(function(){readTextFile("arduino_data/cur_temp.txt")}, 1000);
+</script>
+
+<div id="divcurtemp" style="margin-top: 300px; text-align: center; font-size: 60px;">
+</div>
