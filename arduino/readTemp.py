@@ -35,6 +35,6 @@ def receiving(ser):
         print 'Temperature:', last_received
         saveTemp(last_received)
         sendFile()
-        time.sleep(5)
+        time.sleep(1)
 
 receiving(ser)
